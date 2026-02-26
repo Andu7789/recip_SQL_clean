@@ -201,20 +201,25 @@ labelListInput.addEventListener("keydown", function (event) {
 function addLabelToArray() {
 
   const labelName = labelListInput.value.trim();
-  labelsArray.push(labelName);
   labelListInput.value = "";
   errorMessageElement.textContent = "";
-
 
     // Check for empty input (after trimming)
     if (labelName === "") {
       errorMessageElement.textContent = "Please enter a label";
       errorMessageElement.style.display = "block"; // Show the error message
       return; // Stop the function if input is empty
-    } else {
-      errorMessageElement.style.display = "none"; // Hide any previous error messages
     }
 
+    // Check for duplicate labels
+    if (labelsArray.includes(labelName)) {
+      errorMessageElement.textContent = "That label has already been added";
+      errorMessageElement.style.display = "block";
+      return;
+    }
+
+    errorMessageElement.style.display = "none"; // Hide any previous error messages
+    labelsArray.push(labelName);
 
   const labelsContainer = document.getElementById("labelsContainer")
 
@@ -236,18 +241,16 @@ function addLabelToArray() {
   mainDiv.appendChild(labelDiv);
   mainDiv.appendChild(deleeteDiv);
 
-
   deleeteDiv.addEventListener("click", () => {
    const labelToRemove = deleeteDiv.parentElement
    const indexToRemove = labelsArray.indexOf(labelName);
- 
+
    if (indexToRemove > -1) {
     labelsArray.splice(indexToRemove, 1); // Remove label from the array
     labelToRemove.remove(); // Remove the label from the DOM
-    
+
 }
   });
-    mainDiv.appendChild(deleeteDiv);
     labelsContainer.appendChild(mainDiv)
 }
 
